@@ -1,1 +1,72 @@
-// TODO
+.loading {
+  display: flex;
+  justify-content: center;
+}
+
+.banner {
+  width: 100vw;
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.content {
+  > h1 {
+    margin-top: 80px;
+    font-size: 3rem;
+  }
+
+  > div {
+    margin-top: 24px;
+    display: flex;
+    color: var(--gray-400);
+
+    > div {
+      display: flex;
+      align-items: center;
+
+      svg {
+        height: 20px;
+        width: 20px;
+        margin-right: 8px;
+      }
+
+      p,
+      time {
+        font-size: 1rem;
+      }
+
+      & + div {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  > article {
+    margin-top: 64px;
+
+    > strong {
+      font-size: 2.25rem;
+    }
+
+    > div {
+      margin: 64px 0;
+      color: var(--gray-300);
+      font-size: 1.125rem;
+      text-align: justify;
+
+      p,
+      ul {
+        margin: 24px 0;
+      }
+
+      ul {
+        padding-left: 24px;
+
+        li {
+          margin: 8px 0;
+        }
+      }
+    }
+  }
+}
