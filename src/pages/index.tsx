@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client'
-import { RichText } from 'prismic-dom'
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import Head from 'next/head';
@@ -32,6 +32,27 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  const[posts, setPosts] = useState<PostPagination>(postsPagination)
+
+  async function handleLoadMorePosts() {
+    await fetch(posts.next_page)
+      .then(response => response.json())
+      .then(data => setPosts({
+        next_page: data.next_page,
+        results: [...posts.results, ...data.results.map(post => {
+          return {
+            uid: post.uid,
+            first_publication_date: format(new Date(post.last_publication_date), 'd MMM yyyy ', {locale: ptBR}),
+            data: {
+              title: post.data.title,
+              subtitle: post.data.subtitle,
+              author: post.data.author,
+            }
+          }
+        })]
+      }))
+  }
+
   return(
    <>
     <Head>
@@ -42,7 +63,7 @@ export default function Home({ postsPagination }: HomeProps) {
         <img src="/images/logo.svg" alt="logo" />
       </div>
       <div className={styles.posts}>
-        {postsPagination.results.map(post => (
+        {posts.results.map(post => (
           <Link href={`/post/${post.uid}`}>
           <a key={post.uid}>
             <div>
@@ -63,6 +84,11 @@ export default function Home({ postsPagination }: HomeProps) {
           </Link>
         ))}
       </div>
+      {posts.next_page && 
+        <div className={styles.loadMorePosts}>
+          <button type="button" onClick={handleLoadMorePosts}>Carregar mais posts</button>
+        </div>
+      }
     </main>
     </>
  )
@@ -74,7 +100,8 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.Predicates.at('document.type', 'post')
   ], {
     fetch: ['post.title', 'post.subtitle', 'post.author'],
-    pageSize: 100,
+    pageSize: 1,
+    page: 1
     }
   )
 
