@@ -35,6 +35,10 @@ interface PostProps {
 
 export default function Post({ post }: PostProps){
   const router = useRouter()
+  
+  if (router.isFallback) {
+    return <div className={styles.loading}>Carregando...</div>
+  }
 
   const pageReadingTime = Math.ceil(
     post.data.content.reduce((total, contentItem) => {
@@ -43,10 +47,6 @@ export default function Post({ post }: PostProps){
       return total + (body.length + heading.length);
     }, 0) / 200
   );
-
-  if (router.isFallback) {
-    return <div className={styles.loading}>Carregando...</div>
-  }
 
   return (
     <>
