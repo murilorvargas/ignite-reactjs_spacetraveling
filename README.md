@@ -37,7 +37,7 @@ The following tools were used in this project:
 ## 💻 Project
 
 
-The application was developed using the NextJS framework applying the concepts of Static Site Generation (SSG) and using Prismic CMS for adding and managing the content of posts.
+This application was developed using the NextJS framework applying the concepts of Static Site Generation (SSG) and using Prismic CMS for adding and managing the content of posts.
 
 ## ✅ Requirements
 
